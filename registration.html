@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="format-detection" content="telephone=no" />
+		<title>免费领取体验包</title>
+		<link rel="stylesheet" href="css/swipeslider.css">
+		<link rel="stylesheet" href="css/style.css">
+		<style>
+			.formSubmit {
+				position: absolute;
+				width: 90%;
+				/*margin: 0 auto;*/
+				margin: 0 5%;
+				top: 16%;
+			}
+			
+			.sbumitBtn {
+				display: block;
+				padding: 3% 15%;
+				font-size: 3rem;
+				/*width: 100%;*/
+				text-align: center;
+				line-height: 1.3333333;
+				border-radius: 10px;
+				color: #fff;
+				background-color: #013334;
+				border-color: #2e6da4;
+			}
+			
+			.formSubmit input {
+				display: block;
+				margin: 2.5rem 0;
+				width: 95%;
+				height: 5rem;
+				padding: 6px 12px;
+				font-size: 2rem;
+				line-height: 1.42857143;
+				color: #555;
+				background-color: rgba(0, 0, 0, .1);
+				background-image: none;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+			}
+			
+			.swipslider .sw-slide>img {
+				position: absolute;
+				top: 55.5%;
+				left: 50%;
+				-webkit-transform: translate(-50%, -50%);
+				transform: translate(-50%, -50%);
+				width: 100%;
+				height: 100%;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			
+			.swipslider {
+				padding-top: 36% !important;
+			}
+			.sw-bullet {
+				position: absolute;
+				margin-top: 10%;
+				list-style: none;
+				display: block;
+				width: 100%;
+				top: 110%;
+				text-align: center;
+				padding: 0;
+				margin: 0;
+			}
+			
+			.swipslider {
+				position: relative;
+				transform: inherit;
+				display: block;
+				padding-top: 60%;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			.sw-slide{
+				height: 95%!important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="contentBox">
+			<form class="formSubmit">
+				<input type="text" placeholder="请输入您的手机号" id="phone" />
+				<input type="text" placeholder="请输入孩子的姓名" id="name" />
+				<input type="text" placeholder="请输入孩子的年龄" id="age" />
+				<a class="sbumitBtn">点击免费领取</a>
+			</form>
+			<figure id="full_feature" class="swipslider" style="top: 35%;overflow: hidden;">
+				<ul class="sw-slides">
+					<li class="sw-slide">
+						<img src="img/001.png" alt="">
+					</li>
+					<li class="sw-slide">
+						<img src="img/002.png" alt="">
+					</li>
+					<li class="sw-slide">
+						<img src="img/003.png" alt="">
+					</li>
+					<li class="sw-slide">
+						<img src="img/004.png" alt="">
+					</li>
+					<li class="sw-slide">
+						<img src="img/005.png" alt="">
+					</li>
+				</ul>
+			</figure>
+		</div>
+		<script src="build/js/jquery-1.11.1.min.js"></script>
+		<script src="build/js/touch.js"></script>
+		<script src="build/js/swipeslider2.js"></script>
+		
+		<script>
+			$(window).load(function() {
+				function getQueryVariable(variable)
+					{
+					var query = window.location.search.substring(1);
+					var vars = query.split("&");
+					for (var i=0;i<vars.length;i++) {
+					var pair = vars[i].split("=");
+					if(pair[0] == variable){return pair[1];}
+					}
+					return(false);
+					};
+					var agent=getQueryVariable("agent")
+
+				$('#full_feature').swipeslider();
+				$('.sbumitBtn').click(function() {
+					var phone = $('#phone').val();
+					var phoneNum = /^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\d{8}$/;
+					var name = $('#name').val();
+					var age = $('#age').val();
+					if(phone == "") {
+						alert("手机号不能为空！");
+						return false;
+					}
+					if(!phoneNum.test(phone)){ 
+						alert("对不起，您输入的手机号码格式不正确!");
+						return false;
+						} 
+					if(name == "") {
+						alert("孩子姓名不能为空！");
+						return false;
+					}
+					if(age == "") {
+						alert("孩子年龄不能为空！");
+						return false;
+					} 
+					var obj={
+						name:name,
+						mobileNo:phone,
+						age:age,
+						agent:agent
+					}
+					$.ajax({
+						type: "post",
+						data:obj,
+						url: "https://www.maiguanjy.com/matata_server/matata/collect/user/add",
+						dataType: "json",
+						success: function(data) {
+							alert("恭喜您领取成功！");
+							WeixinJSBridge.call('closeWindow');
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>

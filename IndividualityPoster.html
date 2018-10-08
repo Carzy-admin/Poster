@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<title>个性化海报</title>
+		<script src="build/js/flexible.js"></script>
+		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="css/swipeslider.css">
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/owl.carousel.css" />
+		<link rel="stylesheet" href="css/owl.theme.css" />
+		<script src="build/js/jquery-1.11.1.min.js"></script>
+		
+	</head>
+
+	<body>
+
+		<div class="ui-loading-wrap" id="loading">
+			<i class="ui-loading"></i>
+			<p>加载中...</p>
+		</div>
+		<!--加载效果 End-->
+		<!--第一屏 Start-->
+		<section class="section" id="first" style="display:none">
+			<figure id="full_feature" class="swipslider" style="background: url(img/demo.png) no-repeat;padding-top: 110%;background-size: 100%;">
+				<ul class="sw-slides">
+					<li class="sw-slide">
+						<img src="img/moban1.jpg" alt="" width="90%">
+					</li>
+					<li class="sw-slide">
+						<img src="img/moban2.jpg" alt="" width="90%">
+					</li>
+					<li class="sw-slide">
+						<img src="img/moban3.jpg" alt="" width="90%">
+					</li>
+					<li class="sw-slide">
+						<img src="img/moban4.jpg" alt="" width="90%">
+					</li>
+					<li class="sw-slide">
+						<img src="img/moban5.jpg" alt="" width="90%">
+					</li>
+					<li class="sw-slide">
+						<img src="img/moban6.jpg" alt="" width="90%">
+					</li>
+					<li class="sw-slide">
+						<img src="img/moban7.jpg" alt="" width="90%">
+					</li>
+					<li class="sw-slide">
+						<img src="img/moban8.jpg" alt="" width="90%">
+					</li>
+					<li class="sw-slide">
+						<img src="img/moban9.jpg" alt="" width="90%">
+					</li>
+				</ul>
+			</figure>
+			<div id="totalUsedNum">
+
+			</div>
+
+			<button type="button" id="btnGenerate" class="btn-large-x" style="font-size: 0.5rem;" data-track="我要制作">
+            <input id="upload" class="upload" name="upload" type="file" accept="image/*" onfocus="this.blur()"/>
+            我要制作
+        </button>
+		</section>
+		<!--第一屏 End-->
+		<!--第二屏 Start-->
+		<section class="section section-top" style="display:none" id="second">
+			<!--<h6 class="h6">拖拽进行照片编辑</h6>-->
+			<div class="tm-m-photos">
+
+				<div class="frame" id="frame">
+					<div class="tm-m-photo-viewer" style="display:block;width: 7.733333rem;height: 11.333333rem;">
+						<!--<img src="img/blank.gif" data-src="img/moban1.jpg" class="word" id="word" />-->
+					</div>
+					<img src="img/blank.gif" id="frameImg" class="frame-img" />
+					<!--<img id="erweima" src="https://www.maiguanjy.com/matata_server/wx/qrcode/createPersonQrCode?token=1234"/>-->
+					<div id="imgSrc" style="position: absolute;bottom: 1.5%;left: 8%;width: 1.5rem;height: 1.5rem;display: inline-block;">
+						<!--<img src="img/fenxiang.png" id="erweima" data-src="img/fenxiang.png" width="50px" height="50px">-->
+					</div>
+				</div>
+
+				<div style="border-bottom:2px solid #013334;"></div>
+		
+				<ul class="tm-m-photos-thumb clearfix owl-carousel" id="owl-example" style="verflow:scroll">
+
+				</ul>
+
+</div>
+			<div class="ui-justify">
+				<button type="button" class="btn-middle" data-track="选择图片">选择图片
+            	<input id="uploads" name="uploads" class="upload" type="file" accept="image/*" onfocus="this.blur()"/>
+            </button>
+            <button type="button" id="btnRotate" class="btn-middle">旋转</button>
+				<button type="button" id="btnConfirm" class="btn-middle btn-sunmit" data-track="保存/分享">保存/分享</button>
+			</div>
+		</section>
+		<!--第二屏 End-->
+		<!--第三屏 Start-->
+		<section class="section section-top2" style="display: none" id="third">
+			<div class="frame" style="position: relative;">
+				<img src="img/blank.gif" class="db-img" id="compose" />
+
+			</div>
+			<div class="ui-justify">
+				<img src="img/fenxiang.png" width="100%">
+			</div>
+		</section>
+		<!--第三屏 End-->
+
+		<!--弹出框 Start-->
+		<aside class="dialog" style="display: none" id="dialog">
+			<p>长按海报即可将图片保存至手机</p>
+			<button type="button" class="btn-large-x">我知道了</button>
+		</aside>
+		<!--弹出框 End-->
+
+		<script src="build/js/swipeslider.js"></script>
+		<script src="build/js/commentImg.js"></script>
+		<script src="build/js/touch.js"></script>
+		<script src="build/js/index.bundle.js"></script>
+		<script type="text/javascript" src="build/owl.carousel.min.js" ></script>
+		
+		<script>
+
+				function imgList() {
+					$.ajax({
+						type: "get",
+						async: false,
+						url: "https://www.maiguanjy.com/matata_server/matata/share/template/toMain",
+						dataType: "json",
+						success: function(data) {
+							var imgArr = data.RES_DATA.list;
+							var title = '';
+							var content = '';
+							var totalUsedNum = data.RES_DATA.totalUsedNum;
+							var totalNum = '';
+							totalNum += '<p class="passIn">超过<span>' + totalUsedNum + '</span>人已成功合成个性化海报</p>'
+							$('#totalUsedNum').html(totalNum)
+							title += '<img src="img/blank.gif" data-src="https://www.maiguanjy.com/matata_server/showFile/showImage?fk=' 
+							+ imgArr[0].picUrl.slice(7) + '" class="word" id="word" />'
+							$(".tm-m-photo-viewer").html(title)
+										imgArr.forEach(function(item) {
+								content += '<li class="item" ids="'
+								+ item.id + '" data-src="https://www.maiguanjy.com/matata_server/showFile/showImage?fk='
+								+ item.picUrl.slice(7) + '">' 
+								+'<a href="javascript:void(0)"><img src="https://www.maiguanjy.com/matata_server/showFile/showImage?fk='
+								+ item.picUrl.slice(7) + '">'
+								+'<b class="tm-photos-arrow"></b> </a></li>'
+								
+							})
+							
+							$(".tm-m-photos-thumb ").html(content);
+							
+						}
+					
+					});
+
+				}
+
+				imgList();
+				
+				var token = localStorage.getItem("token")
+				//	alert(token)
+				var imgShow = ""
+				imgShow = "<img id=\"erweima\" data-src=\"https://www.maiguanjy.com/matata_server/wx/qrcode/createPersonQrCode?token=" + token + "\" src=\"https://www.maiguanjy.com/matata_server/wx/qrcode/createPersonQrCode?token=" + token + "\">";
+				$("#imgSrc").html(imgShow);
+				
+			</script>
+
+			<script>
+			$(window).load(function() {
+				$('#btnGenerate').click(function(){
+					$("#owl-example").owlCarousel();
+				})
+				$('#full_feature').swipeslider();
+				$(".tm-m-photos").commentImg({
+					activeClass: 'tm-current', //缩略图当前状态class,默认'current'
+					nextButton: '.tm-m-photo-viewer-navright', //向后翻页按钮，默认'.next'
+					prevButton: '.tm-m-photo-viewer-navleft', //向前翻页按钮，默认'.prev'
+					imgNavBox: '.tm-m-photos-thumb', //缩略图容器，默认'.photos-thumb'
+					imgViewBox: '.tm-m-photo-viewer' //浏览图容器，默认'.photo-viewer'
+				
+				});
+					$('#owl-example li').first().addClass('tm-current');
+	
+
+				$('.tm-m-photos-thumb li').attr('ids');
+				$('.btn-sunmit').click(function() {
+					var temp = $('.tm-m-photos-thumb li.tm-current').attr('ids');
+					$.ajax({
+						type: "post",
+						url: "https://www.maiguanjy.com/matata_server//matata/share/template/addRealNum?id=" + temp,
+						dataType: "json",
+						success: function(data) {
+						
+						}
+					})
+				});
+
+			})
+		</script>
+	</body>
+
+</html>
